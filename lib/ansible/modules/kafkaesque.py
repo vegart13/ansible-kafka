@@ -16,7 +16,7 @@ import subprocess
 def main():
 
     # Set variables as global for cross-function accessability
-    global module, optionallist, action_bool_list, concatenated_required_parameter_list, concatenated_optional_parameter_list, create, delete, describe, alter, command_config, cleanup_policy, compression_type, confluent_key_schema_validation, confluent_key_subject_name_strategy, confluent_tier_enable, confluent_tier_local_hotset_bytes, confluent_value_schema_validation, confluent_value_subject_name_strategy, delete_retention_ms, file_delete_ms, flush_ms, follower_replication_throttled_replicas, index_interval_bytes, leader_replication_throttled_replicas, max_compaction_lag_ms, max_message_bytes, message_timestamp_difference_max_ms, min_cleanable_dirty_ratio, min_compaction_lag_ms, min_insync_replicas, preallocate, segment_bytes, segment_index_bytes, segment_jitter_ms, segment_ms, unclean_leader_election_enable, confluent_placement_constraints, message_downconversion_enable
+    global module, optionallist, action_bool_list, concatenated_required_parameter_list, concatenated_optional_parameter_list, create, delete, describe, alter, command_config, cleanup_policy, compression_type, confluent_key_schema_validation, confluent_key_subject_name_strategy, confluent_tier_enable, confluent_tier_local_hotset_bytes, confluent_value_schema_validation, confluent_value_subject_name_strategy, delete_retention_ms, file_delete_ms, flush_ms, follower_replication_throttled_replicas, index_interval_bytes, leader_replication_throttled_replicas, max_compaction_lag_ms, max_message_bytes, message_timestamp_difference_max_ms, min_cleanable_dirty_ratio, min_compaction_lag_ms, min_insync_replicas, preallocate, segment_bytes, segment_index_bytes, segment_jitter_ms, segment_ms, unclean_leader_election_enable, confluent_placement_constraints, message_downconversion_enable, message_timestamp_type, retention_bytes
 
     module_args = dict(
         custom_bin_path                             =dict(type='str', default='kafka-topics'),
@@ -86,10 +86,12 @@ def main():
     max_compaction_lag_ms                           = ' --config max.compaction.lag.ms=' + module.params['max_compaction_lag_ms']
     max_message_bytes                               = ' --config max.message.bytes=' + module.params['max_message_bytes']
     message_timestamp_difference_max_ms             = ' --config message.timestamp.difference.max.ms=' + module.params['message_timestamp_difference_max_ms']
+    message_timestamp_type                          = ' --config message.timestamp.type=' + module.params['message_timestamp_difference_max_ms']
     min_cleanable_dirty_ratio                       = ' --config min.cleanable.dirty.ratio=' + module.params['min_cleanable_dirty_ratio']
     min_compaction_lag_ms                           = ' --config min.compaction.lag.ms=' + module.params['min_compaction_lag_ms']
     min_insync_replicas                             = ' --config min.insync.replicas=' + module.params['min_insync_replicas']
     preallocate                                     = ' --config preallocate=' + module.params['preallocate']
+    retention_bytes                                 = ' --config retention.bytes=' + module.params['preallocate']
     segment_bytes                                   = ' --config segment.bytes=' + module.params['segment_bytes']
     segment_index_bytes                             = ' --config segment.index.bytes=' + module.params['segment_index_bytes']
     segment_jitter_ms                               = ' --config segment.jitter.ms=' + module.params['segment_jitter_ms']
@@ -169,123 +171,123 @@ def add_defined_optional_to_list():
     else: pass
 
     if module.params['compression_type'] != 'undefined':
-        optionallist.append(command_config)
+        optionallist.append(compression_type)
     else: pass
 
     if module.params['confluent_key_schema_validation'] != 'undefined':
-        optionallist.append(cleanup_policy)
+        optionallist.append(confluent_key_schema_validation)
     else: pass
 
     if module.params['confluent_key_subject_name_strategy'] != 'undefined':
-        optionallist.append(command_config)
+        optionallist.append(confluent_key_subject_name_strategy)
     else: pass
 
     if module.params['confluent_tier_enable'] != 'undefined':
-        optionallist.append(cleanup_policy)
+        optionallist.append(confluent_tier_enable)
     else: pass
 
     if module.params['confluent_tier_local_hotset_bytes'] != 'undefined':
-        optionallist.append(command_config)
+        optionallist.append(confluent_tier_local_hotset_bytes)
     else: pass
 
     if module.params['confluent_value_schema_validation'] != 'undefined':
-        optionallist.append(cleanup_policy)
+        optionallist.append(confluent_value_schema_validation)
     else: pass
 
     if module.params['confluent_value_subject_name_strategy'] != 'undefined':
-        optionallist.append(command_config)
+        optionallist.append(confluent_value_subject_name_strategy)
     else: pass
 
     if module.params['delete_retention_ms'] != 'undefined':
-        optionallist.append(cleanup_policy)
+        optionallist.append(delete_retention_ms)
     else: pass
 
     if module.params['file_delete_ms'] != 'undefined':
-        optionallist.append(command_config)
+        optionallist.append(file_delete_ms)
     else: pass
 
     if module.params['flush_ms'] != 'undefined':
-        optionallist.append(cleanup_policy)
+        optionallist.append(flush_ms)
     else: pass
 
     if module.params['follower_replication_throttled_replicas'] != 'undefined':
-        optionallist.append(command_config)
+        optionallist.append(follower_replication_throttled_replicas)
     else: pass
 
     if module.params['index_interval_bytes'] != 'undefined':
-        optionallist.append(cleanup_policy)
+        optionallist.append(index_interval_bytes)
     else: pass
 
     if module.params['leader_replication_throttled_replicas'] != 'undefined':
-        optionallist.append(command_config)
+        optionallist.append(leader_replication_throttled_replicas)
     else: pass
 
     if module.params['max_compaction_lag_ms'] != 'undefined':
-        optionallist.append(cleanup_policy)
+        optionallist.append(max_compaction_lag_ms)
     else: pass
 
     if module.params['max_message_bytes'] != 'undefined':
-        optionallist.append(command_config)
+        optionallist.append(max_message_bytes)
     else: pass
 
     if module.params['message_timestamp_difference_max_ms'] != 'undefined':
-        optionallist.append(cleanup_policy)
+        optionallist.append(message_timestamp_difference_max_ms)
     else: pass
 
     if module.params['message_timestamp_type'] != 'undefined':
-        optionallist.append(command_config)
+        optionallist.append(message_timestamp_type)
     else: pass
 
     if module.params['min_cleanable_dirty_ratio'] != 'undefined':
-        optionallist.append(cleanup_policy)
+        optionallist.append(min_cleanable_dirty_ratio)
     else: pass
 
     if module.params['min_compaction_lag_ms'] != 'undefined':
-        optionallist.append(command_config)
+        optionallist.append(min_compaction_lag_ms)
     else: pass
 
     if module.params['min_insync_replicas'] != 'undefined':
-        optionallist.append(cleanup_policy)
+        optionallist.append(min_insync_replicas)
     else: pass
 
     if module.params['preallocate'] != 'undefined':
-        optionallist.append(command_config)
+        optionallist.append(preallocate)
     else: pass
 
     if module.params['retention_bytes'] != 'undefined':
-        optionallist.append(cleanup_policy)
+        optionallist.append(retention_bytes)
     else: pass
 
     if module.params['segment_bytes'] != 'undefined':
-        optionallist.append(command_config)
+        optionallist.append(segment_bytes)
     else: pass
 
     if module.params['segment_index_bytes'] != 'undefined':
-        optionallist.append(cleanup_policy)
+        optionallist.append(segment_index_bytes)
     else: pass
 
     if module.params['segment_jitter_ms'] != 'undefined':
-        optionallist.append(command_config)
+        optionallist.append(segment_jitter_ms)
     else: pass
 
     if module.params['segment_ms'] != 'undefined':
-        optionallist.append(cleanup_policy)
+        optionallist.append(segment_ms)
     else: pass
 
     if module.params['unclean_leader_election_enable'] != 'undefined':
-        optionallist.append(command_config)
+        optionallist.append(unclean_leader_election_enable)
     else: pass
 
     if module.params['min_cleanable_dirty_ratio'] != 'undefined':
-        optionallist.append(cleanup_policy)
+        optionallist.append(min_cleanable_dirty_ratio)
     else: pass
 
     if module.params['confluent_placement_constraints'] != 'undefined':
-        optionallist.append(command_config)
+        optionallist.append(confluent_placement_constraints)
     else: pass
 
     if module.params['message_downconversion_enable'] != 'undefined':
-        optionallist.append(cleanup_policy)
+        optionallist.append(message_downconversion_enable)
     else: pass
 
     module.params.update({"list": optionallist})
