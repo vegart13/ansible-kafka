@@ -12,8 +12,9 @@
       create: True
       #delete: True
       #describe: True
-      #command_config: /var/tmp/testfile.txt
-      #cleanup_policy: delete
+      #alter: True
+      command_config: /var/tmp/testfile.txt
+      cleanup_policy: delete
     register: testout
   - name: dump test output
     debug:
