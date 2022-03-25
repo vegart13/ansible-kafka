@@ -16,7 +16,7 @@ import subprocess
 def main():
 
     # Set variables as global for cross-function accessability
-    global module, optionallist, action_bool_list, create, delete, describe, alter, command_config, cleanup_policy
+    global module, optionallist, action_bool_list, concatenated_required_parameter_list, concatenated_optional_parameter_list, create, delete, describe, alter, command_config, cleanup_policy, compression_type, confluent_key_schema_validation, confluent_key_subject_name_strategy, confluent_tier_enable, confluent_tier_local_hotset_bytes, confluent_value_schema_validation, confluent_value_subject_name_strategy, delete_retention_ms, file_delete_ms, flush_ms, follower_replication_throttled_replicas, index_interval_bytes, leader_replication_throttled_replicas, max_compaction_lag_ms, max_message_bytes, message_timestamp_difference_max_ms, min_cleanable_dirty_ratio, min_compaction_lag_ms, min_insync_replicas, preallocate, segment_bytes, segment_index_bytes, segment_jitter_ms, segment_ms, unclean_leader_election_enable, confluent_placement_constraints, message_downconversion_enable
 
     module_args = dict(
         custom_bin_path                             =dict(type='str', default='kafka-topics'),
@@ -110,14 +110,23 @@ def main():
     # 4. Add defined optional parameters to list
     add_defined_optional_to_list()
     
-    # 5. Concatenate items in list to string
-    concatenated_sentence = ' '.join(optionallist)
+    # 5. Concatenate items in list to strings
+    concatenated_required_parameter_list = module.params['action_with_required']
+    concatenated_optional_parameter_list = ' '.join(optionallist)
 
+    # 6. Alter full string to run based on action. If action is set to describe or delete optional arguments are ignored.
+    if module.params['create'] == True or module.params['alter'] == True:
+        complete_string = concatenated_required_parameter_list + concatenated_optional_parameter_list
 
-    complete_string = module.params['action'] + concatenated_sentence
+    if module.params['delete'] == True or module.params['describe'] == True:
+        complete_string = concatenated_required_parameter_list
 
-    module.params.update({"complete": complete_string})
+    shellscript = str(complete_string)
 
+    module.params.update({"shellscript_test": shellscript})
+
+    # 7. Execute string
+    os.system(shellscript)
 
     # Ansible exit
     module.exit_json(changed=True, meta=module.params)
@@ -137,11 +146,12 @@ def create_action_string():
         module.params.update({"action": module.params['custom_bin_path'] + " --describe "})
     elif alter == True:
         module.params.update({"action": module.params['custom_bin_path'] + " --alter "})
-    else: module.fail_json(msg='Should not be reached')
+    else: module.fail_json(msg='Something went wrong with action string generation.')
 
 def append_remaining_required_params():
     module.params.update({"action_with_required": \
                             module.params['action'] + \
+                            ' --bootstrap-server ' + \
                             module.params['bootstrap_server'] + \
                             ':' + \
                             module.params['port'] + \
@@ -279,17 +289,6 @@ def add_defined_optional_to_list():
     else: pass
 
     module.params.update({"list": optionallist})
-
-    # Save command to param then convert to string
-    # kafka.params.update({"test": required_string})
-    # shellscript = str(kafka.params["test"])
-
-    # Execute string on system
-    #os.system(shellscript)
-
-    # Exit
-    #module.exit_json(changed=True, meta=module.params)
-    # kafka.exit_json(changed=True, meta=kafka.params)
 
 if __name__ == '__main__':
     main()

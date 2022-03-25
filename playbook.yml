@@ -6,14 +6,14 @@
   - name: run the new module
     kafkaesque:
       custom_bin_path: ~/Desktop/Kafka/bin/kafka-topics
-      topic_name: test-topic
-      port:  9092
+      topic_name: test-topic-2
+      port: 9092
       bootstrap_server: localhost
       create: True
       #delete: True
       #describe: True
       #alter: True
-      command_config: /var/tmp/testfile.txt
+      #command_config: /var/tmp/testfile.txt
       cleanup_policy: delete
     register: testout
   - name: dump test output
