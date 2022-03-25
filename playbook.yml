@@ -8,8 +8,8 @@
       custom_bin_path: ~/Desktop/Kafka/bin/kafka-topics
       topic_name: test-topic
       port:  9092
-      #bootstrap_server: localhost
-      #create: True
+      bootstrap_server: localhost
+      create: True
       #delete: True
       #describe: True
       #command_config: /var/tmp/testfile.txt
